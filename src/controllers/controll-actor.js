@@ -21,8 +21,8 @@ const getActor = async (_, args) => {
 
 const createActor = async (_, args) => { 
   try {
-    const {name, lastName, birthdate} = args.actor;
-    const newActor = new Actor({name, lastName, birthdate});
+    const {name, lastName, birthdate, image} = args.actor;
+    const newActor = new Actor({name, lastName, birthdate, image});
     await newActor.save();
     return newActor;
   } catch (error) {

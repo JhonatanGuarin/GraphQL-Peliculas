@@ -7,6 +7,7 @@ const typeDefs = `
         name: String
         lastName: String
         birthdate: Date
+        image: String
     }
 
     type movie {
@@ -32,6 +33,7 @@ const typeDefs = `
         name: String
         lastName: String
         birthdate: Date
+        image: String
     }
 
     input MovieInput {
