@@ -14,9 +14,13 @@ const actorSchema = new Schema({
     birthdate: {
         type: Date,
         required: true
+    },
+    image: {
+        type: String,
+        required : true
     }
 });
 
-const actorModel = mongoose.model('actores', actorSchema);
+const actorModel = mongoose.model('actors', actorSchema);
 
 export default actorModel;

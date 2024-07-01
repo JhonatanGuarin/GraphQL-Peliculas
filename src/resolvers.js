@@ -1,75 +1,49 @@
 import { DateResolver } from 'graphql-scalars';
-import Actor from "./models/actor-model.js"; 
-import Movie from './models/movie-model.js';
 
+import {
+    getAllActor,
+    getActor,
+    createActor,
+    deleteActor,
+    updateActor
+} from "./controllers/controll-actor.js"
+
+import {
+    getAllMovies,
+    getMovie,
+    createMovie,
+    deleteMovie,
+    updateMovie
+} from "./controllers/controll-movie.js"
 
 const resolvers = {
 
     Date: DateResolver,
 
     Query: {
-        getAllActor: async () => {
-            const actor = await Actor.find()
-            return actor
-        },
+        getAllActor: getAllActor,
 
-        getActor: async (_, args) => {
-            const actor = await Actor.findById(args.id)
-            return actor
-        },
+        getActor: getActor,
 
-        getAllMovies: async () => {
-            const movie = await Movie.find()
-            return movie
-        },
+        getAllMovies: getAllMovies,
 
-        getMovie: async (_, args) => {
-            const movie = await Movie.findById(args.id)
-            return movie
-        }
+        getMovie: getMovie,
     },
 
     Mutation: {
 
-        createActor: async (_, args) => {
-            const {name, lastName, birthdate} = args.actor
-            const newActor = new Actor({name, lastName, birthdate})
-            await newActor.save()
-            return newActor
-        },
+        createActor: createActor,
         
-        deleteActor: async (_, args) => {
-            await Actor.findByIdAndDelete(args.id)
-            return "Actor delete"
-        },
+        deleteActor: deleteActor,
 
-        updateActor: async (_, args) => {
-           const actorUpdate = await Actor.findByIdAndUpdate(args.id, {
-            $set: args.actor
-           }, {new: true})
+        updateActor: updateActor,
 
-           return actorUpdate
-        },
         
-        createMovie: async (_, args) => {
-            const {title, gender, year, director, image} = args.movie
-            const newMvoie = new Movie({title, gender, year, director, image})
-            await newMvoie.save()
-            return newMvoie
-        },
+        createMovie: createMovie,
 
-        deleteMovie: async (_, args) => {
-            await Movie.findByIdAndDelete(args.id)
-            return "Movie delete"
-        },
+        deleteMovie: deleteMovie,
 
-        updateMovie: async (_, args) => {
-           const movieUpdate = await Movie.findByIdAndUpdate(args.id, {
-            $set: args.movie
-           }, {new: true})
-
-           return movieUpdate
-        }
+        updateMovie: updateMovie,
     }
 }
 
