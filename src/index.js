@@ -3,21 +3,21 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 import resolvers from "./resolvers.js";
 import typeDefs from "./typeDefs.js";
 
-
-// Creación del servidor Apollo
+// Creación del servidor Apollo con introspection y playground habilitados
 const server = new ApolloServer({
     typeDefs,
-    resolvers
+    resolvers,
+    introspection: true,  // Habilita introspection en producción
+    playground: true,     // Habilita playground en producción
 });
 
-//Connect to database
-import('./drivers/connect-db.js')
-
+// Connect to database
+import('./drivers/connect-db.js');
 
 // Inicio del servidor
 async function startServer() {
     const { url } = await startStandaloneServer(server, {
-        listen: { port: 3600 }
+        listen: { port: process.env.PORT || 3600 }  // Usa el puerto de la variable de entorno PORT o 3600
     });
 
     console.log(`🚀 Servidor listo en ${url}`);
