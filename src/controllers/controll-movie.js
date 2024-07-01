@@ -21,8 +21,8 @@ const getMovie = async (_, args) => {
 
 const createMovie = async (_, args) => {
   try {
-    const { title, gender, year, director, image } = args.movie;
-    const newMovie = new Movie({ title, gender, year, director, image });
+    const { title, gender, year, director, image, actors } = args.movie;
+    const newMovie = new Movie({ title, gender, year, director, image, actors });
     await newMovie.save();
     return newMovie;
   } catch (error) {

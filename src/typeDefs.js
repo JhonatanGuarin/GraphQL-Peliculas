@@ -17,6 +17,7 @@ const typeDefs = `
         year: String
         director: String
         image: String
+        actors: [actor]
     }
 
 
@@ -42,6 +43,7 @@ const typeDefs = `
         year: String
         director: String
         image: String
+        actors: [ID]
     }
 
     type Mutation {
