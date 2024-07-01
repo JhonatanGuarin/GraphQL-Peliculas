@@ -23,11 +23,7 @@ const movieSchema = new Schema({
     image: {
         type: String,
         required : true
-    },
-    actors: [{
-        type: Schema.Types.ObjectId,
-        ref: 'actors'
-      }]
+    }
   })
   
 const movieModel = mongoose.model('movies',movieSchema)
