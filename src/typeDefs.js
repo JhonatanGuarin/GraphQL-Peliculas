@@ -19,6 +19,13 @@ const typeDefs = `
         image: String
     }
 
+    type register {
+        id: ID
+        movieId: movie
+        actorId: actor
+
+    }
+
 
     type Query {
         getAllActor: [actor]
@@ -26,6 +33,11 @@ const typeDefs = `
 
         getAllMovies: [movie]
         getMovie(id: ID): movie
+
+        getAllRegisters: [register]
+        getRegister(id: ID): register
+        getActorsByMovieId(movieId: ID!): [actor]
+
     }
 
 
@@ -44,6 +56,14 @@ const typeDefs = `
         image: String
     }
 
+    input RegisterInput {
+        movieId: ID!
+        actorId: ID!
+    }
+
+
+
+
     type Mutation {
         createMovie(movie: MovieInput!): movie
         deleteMovie(id: ID!): String
@@ -52,6 +72,11 @@ const typeDefs = `
         createActor(actor: ActorInput!): actor
         deleteActor(id: ID!): String
         updateActor(id: ID!, actor: ActorInput): actor
+
+        createRegister(register: RegisterInput!): register
+        deleteRegister(id: ID!): String
+        updateRegister(id: ID!, register: RegisterInput): register
+
     }
 
 `

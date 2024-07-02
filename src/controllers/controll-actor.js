@@ -19,16 +19,30 @@ const getActor = async (_, args) => {
   }
 };  
 
-const createActor = async (_, args) => { 
+const createActor = async (_, args) => {
   try {
-    const {name, lastName, birthdate, image} = args.actor;
-    const newActor = new Actor({name, lastName, birthdate, image});
+    const { name, lastName, birthdate, image } = args.actor;
+
+    // Verificar que el nombre y apellido no estén repetidos
+    const existingActor = await Actor.findOne({ name, lastName });
+    if (existingActor) {
+      throw new Error("An actor with this name and last name already exists");
+    }
+
+    // Verificar que la fecha de nacimiento sea menor a la fecha actual
+    const birthdateDate = new Date(birthdate);
+    const currentDate = new Date();
+    if (birthdateDate >= currentDate) {
+      throw new Error("Birthdate must be earlier than the current date");
+    }
+
+    const newActor = new Actor({ name, lastName, birthdate, image });
     await newActor.save();
     return newActor;
   } catch (error) {
     throw new Error("Error creating actor: " + error.message);
   }
-};  
+};
 
 const deleteActor = async (_, args) => { 
   try {
@@ -40,17 +54,37 @@ const deleteActor = async (_, args) => {
   }
 };  
 
-const updateActor = async (_, args) => { 
+const updateActor = async (_, args) => {
   try {
-    const actorUpdate = await Actor.findByIdAndUpdate(args.id, { 
-      $set: args.actor
-    }, {new: true});
+    const { id, actor } = args;
+    const { name, lastName, birthdate, image } = actor;
+
+    // Verificar que la combinación de nombre y apellido no esté repetida (excluyendo el actor actual)
+    if (name && lastName) {
+      const existingActor = await Actor.findOne({ 
+        name, 
+        lastName, 
+        _id: { $ne: id } // excluye el actor actual de la búsqueda
+      });
+      if (existingActor) {
+        throw new Error("An actor with this name and last name already exists");
+      }
+    }
+
+    // Realizar la actualización
+    const actorUpdate = await Actor.findByIdAndUpdate(
+      id, 
+      { $set: actor },
+      { new: true, runValidators: true }
+    );
+
     if (!actorUpdate) throw new Error("Actor not found");
+    
     return actorUpdate;
   } catch (error) {
     throw new Error("Error updating actor: " + error.message);
   }
-};  
+};
 
 export { 
   getAllActor, 
